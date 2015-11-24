@@ -5,6 +5,7 @@ import pdb
 from tornado import gen
 
 import docker
+from docker.errors import APIError
 
 from dockerspawner import DockerSpawner
 
