@@ -1,8 +1,8 @@
+import zipfile
+from io import BytesIO
+from tempfile import mkdtemp
 from os.path import join as pjoin
 from os.path import split as psplit
-from io import BytesIO
-import zipfile
-from tempfile import mkdtemp
 
 from tornado import gen, web
 
@@ -23,7 +23,7 @@ class CarinaAuth(Authenticator):
       tabindex="1"
       autofocus="autofocus"
     />
-    <label for="zipfile_input">Auth file:</label>
+    <label for="zipfile_input">Credentials file:</label>
     <input
       id="zipfile_input"
       type="file"
@@ -31,6 +31,8 @@ class CarinaAuth(Authenticator):
       name="zipfile"
       tabindex="2"
     />
+    <p class="help-block">Place your <a href="https://getcarina.com">carina</a>
+    cluster's credentials file here and we will launch your jupyter notebook on it.</p>
     <input
       type="submit"
       id="login_submit"
@@ -44,18 +46,17 @@ class CarinaAuth(Authenticator):
     @gen.coroutine
     def authenticate(self, handler, data):
         username = data['username']
-        if not handler.find_user(username):
-            zf = zipfile.ZipFile(BytesIO(handler.request.files['zipfile'][0]['body']))
 
-            cluster_name = psplit(zf.namelist()[0])[0]
-            self.docker_env_dir = mkdtemp(suffix='-carinaauth')
+        zf = zipfile.ZipFile(BytesIO(handler.request.files['zipfile'][0]['body']))
 
-            for name in ('docker.env', 'cert.pem', 'ca.pem', 'ca-key.pem', 'key.pem'):
-                zf.extract(pjoin(cluster_name, name), path=self.docker_env_dir)
+        cluster_name = psplit(zf.namelist()[0])[0]
+        self.docker_env_dir = mkdtemp(suffix='-carinaauth')
 
-            self.docker_env_dir = pjoin(self.docker_env_dir, cluster_name)
+        for name in ('docker.env', 'cert.pem', 'ca.pem', 'ca-key.pem', 'key.pem'):
+            zf.extract(pjoin(cluster_name, name), path=self.docker_env_dir)
 
-            print(self.docker_env_dir)
-            return username
+        self.docker_env_dir = pjoin(self.docker_env_dir, cluster_name)
+
+        return username
 
         

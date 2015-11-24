@@ -53,7 +53,7 @@ class CarinaSpawner(DockerSpawner):
     def start(self, image=None):
         yield super(CarinaSpawner, self).start(
             image=image,
-            extra_host_config={'port_bindings': {8888: 8888}},
+            extra_host_config={'port_bindings': {8888: None}},
         )
 
         container = yield self.get_container()
