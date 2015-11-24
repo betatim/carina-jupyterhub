@@ -14,8 +14,7 @@ users bring the computing power. Amazing!
 
 Head over to [getcarina.com](https://getcarina.com), register for an
 account, and fire up a cluster. Click "Get access" to download a
-zipfile containing all the information on how to connect to your
-cluster. This is your *auth file*.
+zipfile with the credentials of your cluster. This is your *auth file*.
 
 
 # Do it yourself
@@ -23,22 +22,18 @@ cluster. This is your *auth file*.
 To setup your own jupyterhub frontend running on carina:
 
  * create a new cluster on [getcarina.com](https://getcarina.com)
- * download and unzip the access file
+ * download and unzip the credentials
  * `source docker.env` from the unzipped access file
  * `docker run --net=host -ti --rm -p 8000 betatim/carina-jupyterhub:24112015 bash`
  * find the clusters public IP: `ifconfig eth0`
- * modify `jupyterhub_config.py`, replacing `public_ips()[0]` with the public IP
-   of your cluster:
-```
-   c.JupyterHub.ip = '172.99.78.68'#public_ips()[0]
-   c.JupyterHub.hub_ip = '172.99.78.68'#public_ips()[0]
-   c.JupyterHub.hub_api_ip = '172.99.78.68'#public_ips()[0]
-```
+ * modify `jupyterhub_config.py` with ```sed -i -e "s/public_ips()\[0\]/\'`ip addr list eth0 |grep "inet "|cut -d' ' -f6|cut -d/ -f1`'/g" jupyterhub_config.py``` This replaces `public_ips()[0]` with the public IP
+   of your cluster
  * start jupyterhub: `jupyterhub`
  * open `http://IP:8000` in a browser
  * create a second carina cluster, download the access file
- * enter a short username, and upload the zipfile for your second
+ * on `http://IP:8000` enter a short username, and upload the credentials file of your second
    cluster as the *auth file*
+ * Have fun!
 
 
 # Security
