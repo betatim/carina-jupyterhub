@@ -20,11 +20,16 @@ To setup your own jupyterhub frontend hosted on carina:
  1. `docker run --net=host -ti --rm -p 8000 betatim/carina-jupyterhub:25112015 bash`
  1. In the container modify `jupyterhub_config.py` with ```sed -i -e "s/public_ips()\[0\]/\'`ip addr list eth0 |grep "inet "|cut -d' ' -f6|cut -d/ -f1`'/g" jupyterhub_config.py```
     This replaces `public_ips()[0]` with the public IP of your cluster in `jupyterhub_config.py`
- 1. start jupyterhub: `jupyterhub`. This will eventually print `JupyterHub is now running at http://SomeIPAddress:8000/`.
+ 1. start jupyterhub: `jupyterhub`. This will eventually print
+    `JupyterHub is now running at http://SomeIPAddress:8000/`. Congratulations, you now running
+    `jupyterhub` on a carina cluster!
+ 
+To use the service you just built:
+
  1. create a second carina cluster, and download the access credentials
  1. Visit `http://SomeIPAddress:8000` enter a short username, and upload the credentials file of your second
     cluster as the *Credentials file*
- 1. Share `http://SomeIPAddress:8000` with your friends (they need to create a carina cluster and use their credentials when signing in)!
+ 1. Share `http://SomeIPAddress:8000` with your friends (they have to repeat these last three steps)!
 
 
 # Be safe out there! 
