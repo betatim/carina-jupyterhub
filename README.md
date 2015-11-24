@@ -29,11 +29,11 @@ To setup your own jupyterhub frontend running on carina:
  * find the clusters public IP: `ifconfig eth0`
  * modify `jupyterhub_config.py`, replacing `public_ips()[0]` with the public IP
    of your cluster:
-   ```
-c.JupyterHub.ip = '172.99.78.68'#public_ips()[0]
-c.JupyterHub.hub_ip = '172.99.78.68'#public_ips()[0]
-c.JupyterHub.hub_api_ip = '172.99.78.68'#public_ips()[0]
-   ```
+```
+   c.JupyterHub.ip = '172.99.78.68'#public_ips()[0]
+   c.JupyterHub.hub_ip = '172.99.78.68'#public_ips()[0]
+   c.JupyterHub.hub_api_ip = '172.99.78.68'#public_ips()[0]
+```
  * start jupyterhub: `jupyterhub`
  * open `http://IP:8000` in a browser
  * create a second carina cluster, download the access file
