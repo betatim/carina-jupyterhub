@@ -12,17 +12,29 @@ users bring the computing power. Amazing!
 
 # Impress your friends
 
-To setup your own jupyterhub frontend hosted on carina:
+To setup your own jupyterhub frontend hosted on carina, create a new cluster on carina and complete the following steps.
 
- 1. Create a new cluster on [getcarina.com](https://getcarina.com)
- 1. Install and configure the [Carina CLI](https://github.com/getcarina/carina) with your Carina username and API key.
- 1. Run `eval $(carina env name-of-your-cluster)` to set up your environment.
- 1. `docker run --net=host -ti --rm -p 8000 betatim/carina-jupyterhub:25112015 bash`
- 1. In the container modify `jupyterhub_config.py` with ```sed -i -e "s/public_ips()\[0\]/\'`ip addr list eth0 |grep "inet "|cut -d' ' -f6|cut -d/ -f1`'/g" jupyterhub_config.py```
-    This replaces `public_ips()[0]` with the public IP of your cluster in `jupyterhub_config.py`
- 1. start jupyterhub: `jupyterhub`. This will eventually print
-    `JupyterHub is now running at http://SomeIPAddress:8000/`. Congratulations, you now running
-    `jupyterhub` on a carina cluster!
+# Obtaining Access Creditentials
+
+## Using Carina CLI
+
+1. Install and configure the [Carina CLI](https://github.com/getcarina/carina) with your Carina username and API key.
+1. Run `eval $(carina env name-of-your-cluster)` to set up your environment.
+
+## Use Carina Credentials Zip
+
+1. Click "Get Access" on the Carina web interface to download a zip of your credentials.
+2. Unzip the credentials zip file. 
+3. Run `source docker.env` from the unzipped access file.
+
+# Running JupyterHub on Carina
+
+1. `docker run --net=host -ti --rm -p 8000 betatim/carina-jupyterhub:25112015 bash`
+1. In the container modify `jupyterhub_config.py` with ```sed -i -e "s/public_ips()\[0\]/\'`ip addr list eth0 |grep "inet "|cut -d' ' -f6|cut -d/ -f1`'/g" jupyterhub_config.py```
+   This replaces `public_ips()[0]` with the public IP of your cluster in `jupyterhub_config.py`
+1. start jupyterhub: `jupyterhub`. This will eventually print
+   `JupyterHub is now running at http://SomeIPAddress:8000/`. Congratulations, you now running
+   `jupyterhub` on a carina cluster!
  
 To use the service you just built:
 
